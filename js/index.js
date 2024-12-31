@@ -27,10 +27,39 @@ let fruits = JSON.parse(fruitsJSON);
 
 // отрисовка карточек
 const display = () => {
+  fruitsList.innerHTML = '';
   // TODO: очищаем fruitsList от вложенных элементов,
   // чтобы заполнить актуальными данными из fruits
 
   for (let i = 0; i < fruits.length; i++) {
+    const newLi = document.createElement('li');
+    newLi.classList.add('fruit__item');
+    if (fruits[i].color == 'фиолетовый') {
+      newLi.classList.add('fruit_violet');
+    } else
+    if (fruits[i].color == 'зеленый') {
+      newLi.classList.add('fruit_green');
+    } else 
+    if (fruits[i].color == 'розово-красный') {
+      newLi.classList.add('fruit_carmazin'); 
+    } else
+    if (fruits[i].color == 'желтый') {
+      newLi.classList.add('fruit_yellow');
+    }  else
+    if (fruits[i].color == 'светло-коричневый') {
+      newLi.classList.add('fruit_lightbrown') 
+    }
+    fruitsList.appendChild(newLi);
+
+    const div = document.createElement("div");
+    div.classList.add('fruit__info');
+    newLi.appendChild(div);  // добавляем div в родительский элемент li при помощи document.appendChild
+    div.innerHTML = `
+        <div>index: ${i + 1}</div>
+        <div>kind: ${fruits[i].kind}</div>
+        <div>color: ${fruits[i].color}</div>
+        <div>weight: ${fruits[i].weight}</div>
+        `;
     // TODO: формируем новый элемент <li> при помощи document.createElement,
     // и добавляем в конец списка fruitsList при помощи document.appendChild
   }
@@ -49,18 +78,16 @@ const getRandomInt = (min, max) => {
 // перемешивание массива
 const shuffleFruits = () => {
   let result = [];
-
-  // ATTENTION: сейчас при клике вы запустите бесконечный цикл и браузер зависнет
+  let newFruits = [...fruits];
   while (fruits.length > 0) {
-    // TODO: допишите функцию перемешивания массива
-    //
-    // Подсказка: находим случайный элемент из fruits, используя getRandomInt
-    // вырезаем его из fruits и вставляем в result.
-    // ex.: [1, 2, 3], [] => [1, 3], [2] => [3], [2, 1] => [], [2, 1, 3]
-    // (массив fruits будет уменьшатся, а result заполняться)
+    let randomFruit = getRandomInt(0, fruits.length - 1); // Подсказка: находим случайный элемент из fruits, используя getRandomInt
+    result.push(fruits[randomFruit]);  
+    fruits.splice(randomFruit, 1);  
   }
-
   fruits = result;
+  if (fruits.every((el, index) => el === newFruits[index])) {
+    alert("Новый массив идентичен первоначальному. Перемешайте ещё раз!"); // перемешиваем новый массив с предупреждением в alert.  
+  }
 };
 
 shuffleButton.addEventListener('click', () => {
@@ -72,11 +99,21 @@ shuffleButton.addEventListener('click', () => {
 
 // фильтрация массива
 const filterFruits = () => {
-  fruits.filter((item) => {
-    // TODO: допишите функцию
-  });
+  if (isNaN(maxWeight.value) || isNaN(minWeight.value) || maxWeight.value == '' || minWeight.value == '' || maxWeight.value < 0 || minWeight.value < 0) {
+    alert ('Введите более корректные значения веса');
+    minWeight.value = "";
+    maxWeight.value = "";
+    return fruits;
+  };
+ let result = fruits.filter((item) => {
+  if (parseInt(maxWeight.value) < parseInt(minWeight.value)) {
+    [maxWeight.value, minWeight.value] = [minWeight.value, maxWeight.value];
+  }
+  return ((item.weight >= parseInt(minWeight.value)) && (item.weight <= parseInt(maxWeight.value)));
+});
+fruits = result;
 };
-
+ 
 filterButton.addEventListener('click', () => {
   filterFruits();
   display();
