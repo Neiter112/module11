@@ -1,4 +1,6 @@
 // элементы в DOM можно получить при помощи функции querySelector
+const minWeight = document.querySelector('.minweight__input'); // поле с минимальным весом
+const maxWeight = document.querySelector('.maxweight__input'); // поле с максимальным весом
 const fruitsList = document.querySelector('.fruits__list'); // список карточек
 const shuffleButton = document.querySelector('.shuffle__btn'); // кнопка перемешивания
 const filterButton = document.querySelector('.filter__btn'); // кнопка фильтрации
