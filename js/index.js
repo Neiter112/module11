@@ -137,22 +137,22 @@ const comparationColor = (a, b) => {
 const sortAPI = {
   bubbleSort(arr, comparation) {
     const n = arr.length;
-  for (let i = 0; i < n-1; i++) {
-     for (let j = 0; j < n-1; j++) {
-      if (comparation(arr[j], arr[j+1])) {
-        let temp = arr[j+1];
-        arr[j+1] = arr[j];
+  for (let i = 0; i < n - 1; i++) {
+     for (let j = 0; j < n - 1; j++) {
+      if (comparation(arr[j], arr[j + 1])) {
+        let temp = arr[j + 1];
+        arr[j + 1] = arr[j];
         arr[j] = temp;
       }
      }
-   return arr;
    }
+   return arr;
   },
+
 // функция быстрой сортировки
   quickSort(arr, comparation) {
-    
       // Условие остановки, выхода из рекурсии, возвращаем массив с 1 элементом
-      if (arr.length < 2) {return arr};
+      if (arr.length < 2) {return arr;}
       // Выбираем опорный элемент
       let pivot = arr[0];
       // Определяем массивы для тех, что меньше и больше опорного
@@ -160,7 +160,7 @@ const sortAPI = {
       const right = [];
       // Проходим циклом по всем элементам из массива и разносим их в созданные ранее массивы согласно условию, больше опорного — в правый, меньше — в левый
       for (let i = 1; i < arr.length; i++) {
-        if (comparationColor(pivot > arr[i])) {
+        if (comparationColor(pivot, arr[i])) {
           left.push(arr[i]);
         } else {
           right.push(arr[i]);
@@ -173,11 +173,12 @@ const sortAPI = {
   },
 
   // выполняет сортировку и производит замер времени
-  startSort(sort, arr, comparation) {
+  startSort(sort, fruits, comparationColor) {
     const start = new Date().getTime();
-    sort(arr, comparation);
+    const sorted = sort(fruits, comparationColor);
     const end = new Date().getTime();
     sortTime = `${end - start} ms`;
+    return sorted;
   },
 };
 
